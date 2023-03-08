@@ -1,0 +1,54 @@
+/* Reset default browser styles */
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+/* Header styles */
+
+header {
+	background-color: #f8f8f8;
+	padding: 20px;
+}
+
+h1 {
+	color: #333;
+	font-size: 2em;
+	margin: 0;
+}
+
+/* make the text be on the top right of the page */
+nav p {
+    float: right;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    margin-right: 5px;
+    margin-top: 0px;
+}
+
+/* style the background / homepage */
+.wallpaper-image img {
+    width: 100%;
+    height: auto;
+}
+
+/* style the text that has link when you hover over it */
+
+a {
+	color: #333;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000;
+}
+
+/* Footer styles */
+
+footer {
+	background-color: #f8f8f8;
+    padding: 10px;
+}
