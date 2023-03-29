@@ -1,6 +1,9 @@
 // MODULES
 var express = require("express");
 
+// ROUTE MODULE
+var userRoutes = require("./routes/userRoutes");
+
 // APP
 const app = express();
 
@@ -11,6 +14,7 @@ app.set("view engine", "ejs");
 
 // CONNECT TO DB
 
+
 // MIDDLEWARE
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -19,6 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+app.use("/users", userRoutes);
 
 // LISTEN
 app.listen(port, host, () => {
