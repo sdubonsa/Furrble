@@ -5,11 +5,17 @@ const router = express.Router();
 // GET /users/register: Send register form
 router.get("/register", controller.register);
 router.post("/register", controller.create);
-// POST /users/login authenticate user
-router.post('/login', controller.authenticate);
-
 
 // GET /users/login: Send login form
 router.get("/login", controller.login);
+
+// POST /users/login authenticate user
+router.post('/login', controller.authenticate);
+
+// GET /users/profile: Show user profile
+router.get('/profile', controller.profile);
+
+// GET /users/logout: Logout user
+router.get('/logout', controller.logout);
 
 module.exports = router;
