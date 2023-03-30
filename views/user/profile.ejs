@@ -1,6 +1,6 @@
 <%- include ('../partials/header.ejs') %>
 <div class="flex items-center h-screen w-full justify-center bg-gray-700">
-<div class="max-w-m">
+<div class="min-w-m max-w-m w-56">
     <div class="bg-gray-800 shadow-xl rounded-lg py-3">
         <div class="photo-wrapper p-2">
             <img class="w-32 h-32 rounded-full mx-auto" src="https://previews.123rf.com/images/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey.jpg" alt="John Doe">
@@ -32,6 +32,7 @@
             <% } %>
 
             <div class="text-center my-3">
+                <a class="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium" href="/users/swipe">Start Swiping</a>
                 <a class="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium" href="/users/logout">Log Out</a>
             </div>
 
