@@ -68,6 +68,15 @@ exports.profile = (req, res, next) => {
       .catch((err) => next(err));
 };
 
+// send card page
+exports.swipe = (req, res, next) => {
+  userModel.find()
+  .then((users) => {
+    res.render("./user/swipe", { users: users });
+  })
+  .catch((err) => next(err));
+};
+
 // logout user
 exports.logout = (req, res, next) => {
   req.session.destroy((err) => {

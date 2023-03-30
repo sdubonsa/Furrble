@@ -5,16 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
     <title>Furrble</title>
 </head>
 <body>
-
-
-    <% if (success.length > 0) { %> 
-        <% for (let i = 0; i < success.length; i++) { %> 
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Yay!</strong>
-                <span class="block sm:inline"><%= success[i] %>.</span>
-            </div>
-        <% } %>
-    <% } %>

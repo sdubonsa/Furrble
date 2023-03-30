@@ -18,4 +18,7 @@ router.get('/profile', controller.profile);
 // GET /users/logout: Logout user
 router.get('/logout', controller.logout);
 
+// GET /users/swipe: Show other users
+router.get('/swipe', controller.swipe);
+
 module.exports = router;
