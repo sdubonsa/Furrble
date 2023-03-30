@@ -10,13 +10,14 @@ exports.login = (req, res) => {
   res.render("./user/login");
 };
 
+// create user
 exports.create = (req, res, next) => {
   let user = new userModel(req.body);
   user
     .save()
     .then((user) => {
       req.flash("success", "User created successfully");
-      res.redirect("/");
+      res.redirect("/users/login");
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -43,7 +44,7 @@ exports.authenticate = (req, res, next) => {
           if (result) {
             req.session.user = user._id;
             req.flash("success", "You have logged in successfully");
-            res.redirect("/users/register");
+            res.redirect("/users/profile");
           } else {
             req.flash("error", "Invalid password");
             res.redirect("/users/login");
@@ -55,4 +56,24 @@ exports.authenticate = (req, res, next) => {
       }
     })
     .catch((err) => next(err));
+};
+
+// send profile page
+exports.profile = (req, res, next) => {
+    userModel
+      .findById(req.session.user)
+      .then((user) => {
+        res.render("./user/profile", { user: user });
+      })
+      .catch((err) => next(err));
+};
+
+// logout user
+exports.logout = (req, res, next) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 };
