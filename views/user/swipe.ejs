@@ -6,6 +6,7 @@
     <ion-icon id="like" name="heart"></ion-icon>
 </div>
 
+<!-- CREDIT FOR THIS SCRIPT https://github.com/CodeSteppe/card-swiper-->
 <script>
     const users = JSON.parse('<%- JSON.stringify(users) %>');
 
@@ -35,9 +36,13 @@
     #init = () => {
         const card = document.createElement("div");
         card.classList.add("card");
+        const fullname = document.createElement("p");
+        fullname.innerHTML = this.fullname;
+        fullname.classList.add("text-black");
         const img = document.createElement("img");
         img.src = this.imageUrl;
         card.append(img);
+        card.append(fullname);
         this.element = card;
         if (this.#isTouchDevice()) {
         this.#listenToTouchEvents();
@@ -152,33 +157,53 @@
     let cardCount = 0;
 
     function appendNewCard() {
-    const card = new Card({
-        imageUrl:
-        "https://ggsc.s3.amazonaws.com/images/uploads/The_Science-Backed_Benefits_of_Being_a_Dog_Owner.jpg",
-        fullname: users[cardCount % 5],
-        onDismiss: appendNewCard,
-        onLike: () => {
-        like.style.animationPlayState = "running";
-        like.classList.toggle("trigger");
-        },
-        onDislike: () => {
-        dislike.style.animationPlayState = "running";
-        dislike.classList.toggle("trigger");
-        },
-    });
-    swiper.append(card.element);
-    cardCount++;
+        if (users[cardCount % 5] === undefined) {
+            // no more users
+            const card = new Card({
+                imageUrl:
+                "https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_300,dpr_3/https://assets.app.engoo.com/images/QyDHB4YHkK2V6TA6QkDzSIMbQpg9IIUKO5tn8KuDcJ1.jpeg",
+                fullname: "No more users :(",
+                onDismiss: () => {
+                    swiper.innerHTML = "No more users :("; // reset
+                    cardCount = 0;
+                },
+            });
+            swiper.append(card.element);
 
-    const cards = swiper.querySelectorAll(".card:not(.dismissing)");
-    cards.forEach((card, index) => {
-        card.style.setProperty("--i", index);
-    });
+            const cards = swiper.querySelectorAll(".card:not(.dismissing)");
+            cards.forEach((card, index) => {
+                card.style.setProperty("--i", index);
+            });
+        } else {
+            const card = new Card({
+                imageUrl:
+                "https://ggsc.s3.amazonaws.com/images/uploads/The_Science-Backed_Benefits_of_Being_a_Dog_Owner.jpg",
+                fullname: users[cardCount % 5].fullname,
+                onDismiss: appendNewCard,
+                onLike: () => {
+                    like.style.animationPlayState = "running";
+                    like.classList.toggle("trigger");
+                },
+                onDislike: () => {
+                    dislike.style.animationPlayState = "running";
+                    dislike.classList.toggle("trigger");
+                },
+            });
+
+            swiper.append(card.element);
+            cardCount++;
+
+            const cards = swiper.querySelectorAll(".card:not(.dismissing)");
+            cards.forEach((card, index) => {
+                card.style.setProperty("--i", index);
+            });
+        }
     }
 
     // first 5 cards
     for (let i = 0; i < 5; i++) {
-    console.log("HI!");
-    appendNewCard();
+        console.log(i);
+        appendNewCard();
     }
 </script>
 
