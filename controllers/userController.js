@@ -1,4 +1,4 @@
-const userModel = require("../models");
+const userModel = require("../models/user");
 
 // Send register form
 exports.register = (req, res) => {
@@ -10,15 +10,15 @@ exports.login = (req, res) => {
   res.render("./user/login");
 };
 
-
-exports.create = (req, res, next)=>{
+exports.create = (req, res, next) => {
   let user = new userModel(req.body);
-  user.save()
-  .then(user=>{
-      req.flash('success', 'User created successfully');
-      res.redirect('/');
-  })
-  .catch(err=>{
+  user
+    .save()
+    .then((user) => {
+      req.flash("success", "User created successfully");
+      res.redirect("/");
+    })
+    .catch((err) => {
       if (err.name === "ValidationError") {
         req.flash("error", err.message);
         return res.redirect("/users/register");
@@ -29,30 +29,30 @@ exports.create = (req, res, next)=>{
         return res.redirect("/users/register");
       }
       next(err);
-  });
+    });
 };
 
 // authenticate user
-exports.authenticate = (req, res, next)=>{
-    userModel.findOne({username: req.body.username})
-    .then(user=>{
-        if(user) {
-            //compare password
-            user.comparePassword(req.body.password)
-            .then(result=>{
-                if(result) {
-                    req.session.user = user._id;
-                    req.flash('success', 'You have logged in successfully');
-                    res.redirect('/users/register');
-                } else {
-                    req.flash('error', 'Invalid password');
-                    res.redirect('/users/login');
-                }
-            })
-        } else {
-            req.flash('error', 'Invalid email');
-            res.redirect('/users/login');
-        }
+exports.authenticate = (req, res, next) => {
+  userModel
+    .findOne({ username: req.body.username })
+    .then((user) => {
+      if (user) {
+        //compare password
+        user.comparePassword(req.body.password).then((result) => {
+          if (result) {
+            req.session.user = user._id;
+            req.flash("success", "You have logged in successfully");
+            res.redirect("/users/register");
+          } else {
+            req.flash("error", "Invalid password");
+            res.redirect("/users/login");
+          }
+        });
+      } else {
+        req.flash("error", "Invalid email");
+        res.redirect("/users/login");
+      }
     })
-    .catch(err=>next(err));
+    .catch((err) => next(err));
 };
