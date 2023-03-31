@@ -21,4 +21,7 @@ router.get('/logout', controller.logout);
 // GET /users/swipe: Show other users
 router.get('/swipe', controller.swipe);
 
+// GET /users/forgotpassword: Show forgot password form
+router.get('/forgotpassword', controller.forgotpassword);
+
 module.exports = router;
