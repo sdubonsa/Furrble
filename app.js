@@ -68,3 +68,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+
+app.get("/faq", (req, res) => {
+  res.render("faq");
+});

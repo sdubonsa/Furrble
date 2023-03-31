@@ -1,0 +1,63 @@
+<%- include('./partials/header.ejs') %>
+    <style>
+        h1 {
+            font-size: large;
+            padding-bottom: 20px;
+        }
+        details {
+            margin-bottom: 20px;
+            border: 1px solid black;
+            border-radius: 4px;
+            padding: 10px;
+            transition: background-color 0.4s ease-in-out;
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        summary::before {
+            content: "\25BC";
+            margin-right: 5px;
+        }
+        details:hover {
+            background-color: gray;
+            cursor: pointer;
+        }
+    </style>
+
+    <div id="hero-section" class="bg-gray-700 flex flex-col items-center relative h-screen">
+        <div class="w-2/4 h-44 mt-28 flex flex-col items-center">
+        </div>
+
+        <head>
+            <title>Frequently Asked Questions</title>
+        </head>
+        <body>
+            <header>
+                <h1>Frequently Asked Questions</h1>
+            </header>
+
+            <details>
+                <summary>Do I need to be a member to adopt an animal?</summary>
+                <p>Yes you need to be a member to adopt an animal.</p>
+            </details>
+
+            <details>
+                <summary>Do I need to be a member to put an animal for adoption?</summary>
+                <p>Yes you need to be a member to post an animal for adoption.</p>
+            </details>
+
+            <details>
+                <summary>Who can adopt an animal?</summary>
+                <p>Almost anyone can adopt an animal!.</p>
+            </details>
+
+            <details>
+                <summary>Do I need to submit an application to adopt an animal?</summary>
+                <p>Yes you need to submit an application to adopt an animal. Although, these
+                    applications take less than 10 minutes to complete.
+                </p>
+            </details>
+        </body>
+    </div>
+<%- include ('./partials/footer.ejs') %>
