@@ -86,3 +86,8 @@ exports.logout = (req, res, next) => {
     res.redirect("/");
   });
 };
+
+// send Forgot Password page
+exports.forgotpassword = (req, res) => {
+  res.render("./user/forgotpassword");
+};
