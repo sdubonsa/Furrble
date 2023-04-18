@@ -1,5 +1,6 @@
 // MODULES
 var express = require("express");
+const serverless = require("serverless-http");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -10,6 +11,7 @@ var userRoutes = require("./routes/userRoutes");
 
 // APP
 const app = express();
+const router = express.Router();
 
 // CONFIG
 let port = 3000;
@@ -68,3 +70,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+
+app.use("./netlifty/functions/app", router);
+
+module.exports.handler = serverless(app);
