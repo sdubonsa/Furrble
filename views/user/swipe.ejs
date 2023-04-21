@@ -8,6 +8,143 @@
 
 <!-- CREDIT FOR THIS SCRIPT https://github.com/CodeSteppe/card-swiper-->
 <script>
+var pets = [];
+var apiKey = "IbaW8dTN1RMuvUDjDeWJ0ezUI3gDF3bGIt6COlj48Gi57bbvzt";
+var apiSecret = "0ZZhQn3IwuGN76cO8lng1TrbgF3JrUB6QSpiye7Z";
+var accessToken = null; // Initialize access token as null
+
+const apiUrl = 'https://api.petfinder.com/v2/oauth2/token';
+
+// Create the request body as a JSON object
+const requestBody = {
+  grant_type: 'client_credentials',
+  client_id: apiKey,
+  client_secret: apiSecret
+};
+const fetch = require('node-fetch'); // Import node-fetch library
+
+const getAccessToken = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch access token');
+            }
+
+            const body = await response.json();
+            accessToken = body.access_token;
+            console.log('Access Token:', accessToken);
+            resolve(accessToken);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+// Wrap the API request in a promise
+const callExternalApiUsingFetch = () => {
+    return new Promise((resolve, reject) => {
+        // ... API call and response handling ...
+        const queryParams = {
+            type: 'Dog', //type of animal
+            breed: 'Pit Bull Terrier',
+            size: 'Medium', // S / M / L
+            age: 'young', //"baby", "young", "adult", "senior"
+            gender: 'male',
+            location: 'Charlotte, NC', //The location to search for animals, such as a city, state, or ZIP code
+            distance: 10, //radius according to unit param
+            unit: 'Miles', //unit param for distance
+            status: "adoptable", //"adoptable", "adopted", "found" -- our app should sort and only find adoptable
+            attributes: "neutered"
+        };
+        fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.animals[0]); // Log the response data
+                pets = data.animals; // Assign value to the global pets variable
+                console.log(pets);
+                resolve(data);
+            })
+            .catch(error => reject(error));
+    });
+};
+
+// Define the appendNewCard function
+const appendNewCard = async (pet) => {
+    if (users[cardCount % 5] === undefined) {
+            // no more users
+            const card = new Card({
+                imageUrl:
+                pets[pet]?.photos[0].full,
+                fullname: "No more users :(",
+                onDismiss: () => {
+                    swiper.innerHTML = "No more users :("; // reset
+                    cardCount = 0;
+                },
+            });
+            swiper.append(card.element);
+
+            const cards = swiper.querySelectorAll(".card:not(.dismissing)");
+            cards.forEach((card, index) => {
+                card.style.setProperty("--i", index);
+            });
+        } else {
+            const card = new Card({
+                imageUrl:
+                pets[pet]?.photos[0].full,
+                fullname: users[cardCount % 5].fullname,
+                onDismiss: appendNewCard,
+                onLike: () => {
+                    like.style.animationPlayState = "running";
+                    like.classList.toggle("trigger");
+                },
+                onDislike: () => {
+                    dislike.style.animationPlayState = "running";
+                    dislike.classList.toggle("trigger");
+                },
+            });
+
+            swiper.append(card.element);
+            cardCount++;
+
+            const cards = swiper.querySelectorAll(".card:not(.dismissing)");
+            cards.forEach((card, index) => {
+                card.style.setProperty("--i", index);
+            });
+};
+}
+
+// Wrap the for loop in an async function
+const fetchAndProcessPets = async () => {
+  try {
+    await getAccessToken(); // Wait for access token
+    await callExternalApiUsingFetch(); // Wait for API call to complete and pets to be fetched
+
+    // Continue with for loop after API call is complete
+    for (let i = 0; i < pets.length; i++) {
+      // Process each pet
+      const pet = pets[i];
+      await appendNewCard(pet); // Wait for appendNewCard to complete before processing next pet
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Usage
+fetchAndProcessPets();
+
     const users = JSON.parse('<%- JSON.stringify(users) %>');
 
     class Card {
@@ -156,54 +293,11 @@
     // variables
     let cardCount = 0;
 
-    function appendNewCard() {
-        if (users[cardCount % 5] === undefined) {
-            // no more users
-            const card = new Card({
-                imageUrl:
-                "https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_300,dpr_3/https://assets.app.engoo.com/images/QyDHB4YHkK2V6TA6QkDzSIMbQpg9IIUKO5tn8KuDcJ1.jpeg",
-                fullname: "No more users :(",
-                onDismiss: () => {
-                    swiper.innerHTML = "No more users :("; // reset
-                    cardCount = 0;
-                },
-            });
-            swiper.append(card.element);
-
-            const cards = swiper.querySelectorAll(".card:not(.dismissing)");
-            cards.forEach((card, index) => {
-                card.style.setProperty("--i", index);
-            });
-        } else {
-            const card = new Card({
-                imageUrl:
-                "https://ggsc.s3.amazonaws.com/images/uploads/The_Science-Backed_Benefits_of_Being_a_Dog_Owner.jpg",
-                fullname: users[cardCount % 5].fullname,
-                onDismiss: appendNewCard,
-                onLike: () => {
-                    like.style.animationPlayState = "running";
-                    like.classList.toggle("trigger");
-                },
-                onDislike: () => {
-                    dislike.style.animationPlayState = "running";
-                    dislike.classList.toggle("trigger");
-                },
-            });
-
-            swiper.append(card.element);
-            cardCount++;
-
-            const cards = swiper.querySelectorAll(".card:not(.dismissing)");
-            cards.forEach((card, index) => {
-                card.style.setProperty("--i", index);
-            });
-        }
-    }
-
+    
     // first 5 cards
     for (let i = 0; i < 5; i++) {
-        console.log(i);
-        appendNewCard();
+        appendNewCard(i);
+        console.log(pets[i]?.photos[0].full);
     }
 </script>
 
