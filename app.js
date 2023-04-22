@@ -71,7 +71,6 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 
 
-
 const request = require("request");
 
 var apiKey = "IbaW8dTN1RMuvUDjDeWJ0ezUI3gDF3bGIt6COlj48Gi57bbvzt";
@@ -117,13 +116,15 @@ const callExternalApiUsingRequest = () => {
     const queryParams = {
       type: 'Dog',     //type of animal
       breed: 'Pit Bull Terrier',
-      size: 'Medium',
+      size: 'Medium',   // S / M / L
       age: 'young',    //"baby", "young", "adult", "senior"
       gender: 'male',   
       location: 'Charlotte, NC',    //The location to search for animals, such as a city, state, or ZIP code
       distance: 10,     //radius according to unit param
       unit: 'Miles',    //unit param for distance
-      status: "adoptable"      //"adoptable", "adopted", "found" -- our app should sort and only find adoptable
+      status: "adoptable",      //"adoptable", "adopted", "found" -- our app should sort and only find adoptable
+      attributes: "neutered"
+      
     };
 
     // Step 5: Use the generated access token in the API request
@@ -140,7 +141,8 @@ const callExternalApiUsingRequest = () => {
         if (err) {
           reject(err);
         } else {
-          console.log(body.animals); // Log the response data
+          console.log(body.animals[0].photos[0].full); // Log the response data
+          pets = body.animals;
           resolve(body);
         }
       }
