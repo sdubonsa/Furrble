@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
-
+const methodOVerride = require("method-override");
 
 // ROUTE MODULE
 var userRoutes = require("./routes/userRoutes");
@@ -62,6 +62,7 @@ app.use((req, res, next) => {
 // MIDDLEWARE
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOVerride("_method"));
 
 // ROUTES
 app.get("/", (req, res) => {

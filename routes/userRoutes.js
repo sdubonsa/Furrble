@@ -21,4 +21,6 @@ router.get('/logout', controller.logout);
 // GET /users/swipe: Show other users
 router.get('/swipe', controller.swipe);
 
+router.put('/swipe', controller.like);
+
 module.exports = router;
