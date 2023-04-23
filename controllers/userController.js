@@ -13,6 +13,7 @@ exports.login = (req, res) => {
 // create user
 exports.create = (req, res, next) => {
   let user = new userModel(req.body);
+  user.likes = [];
   user
     .save()
     .then((user) => {
@@ -85,4 +86,18 @@ exports.logout = (req, res, next) => {
     }
     res.redirect("/");
   });
+};
+
+exports.like = (req, res, next) => {
+  userModel.findById(req.session.user)
+  .then((user) => {
+    console.log(req.body)
+    user.likes.push(req.body.petid);
+    user.save()
+    .then(() => {
+      res.redirect("/users/swipe");
+    })
+    .catch((err) => next(err));
+  })
+  .catch((err) => next(err));
 };

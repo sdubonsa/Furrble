@@ -9,6 +9,7 @@ const requestBody = {
   client_secret: apiSecret
 };
 
+// Get Access Token
 const getAccessToken = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -31,27 +32,33 @@ const getAccessToken = () => {
     });
 };
 
+// Initialize variables
 let accessToken = null;
 let pets = null;
 
 console.log('API call start.')
 let accessTokenCall = getAccessToken();
 
+// When the access token is fetched, make the API call
 accessTokenCall.then(function(result) {
     accessToken = result;
 
+    // When the API call is complete, set the pets variable
     let petsCall = callExternalApiUsingFetch();
     petsCall
     .then(function(result) {
         pets = result;
     })
     .then(function(result) {
+        // When the pets variable is set, append the first card
         appendNewCard();
     })
 });
 
+
+// Append a new card to the swiper
 const appendNewCard = async () => {
-    if (pets[cardCount % 5] === undefined) {
+    if (pets[cardCount] === undefined) {
         // no more pets
         const card = new Card({
             imageUrl: "https://via.placeholder.com/300x300",
@@ -65,12 +72,21 @@ const appendNewCard = async () => {
         swiper.append(card.element);
     } else {
         const card = new Card({
-            imageUrl: pets[cardCount % 5].photos[0].full,
-            fullname: pets[cardCount % 5].name,
+            imageUrl: pets[cardCount].photos[0].full,
+            fullname: pets[cardCount].name,
             onDismiss: appendNewCard,
             onLike: () => {
                 like.style.animationPlayState = "running";
                 like.classList.toggle("trigger");
+
+                // get form
+                const form = document.querySelector('#like-form');
+                // get pet id
+                const petId = pets[cardCount].id;
+                // set pet id
+                form.querySelector('#petid').value = petId;
+                // submit form
+                form.submit();
             },
             onDislike: () => {
                 dislike.style.animationPlayState = "running";
@@ -89,37 +105,34 @@ const appendNewCard = async () => {
 
 // Wrap the API request in a promise
 const callExternalApiUsingFetch = () => {
-  return new Promise((resolve, reject) => {
-    const queryParams = {
-      type: 'Dog',
-      breed: 'Pit Bull Terrier',
-      size: 'Medium',
-      age: 'young',
-      gender: 'male',
-      location: 'Charlotte, NC',
-      distance: 10,
-      unit: 'Miles',
-      status: 'adoptable',
-      attributes: 'neutered'
-    };
-
-    fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        resolve(data.animals);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+return new Promise((resolve, reject) => {
+const queryParams = {
+    type: 'Dog',
+    // breed: 'Pit Bull Terrier',
+    size: 'Medium',
+    age: 'young',
+    gender: 'male',
+    location: 'Charlotte, NC',
+    distance: 10,
+    unit: 'Miles',
+    status: 'adoptable',
+    attributes: 'neutered'
 };
 
-console.log('API call complete.');
-console.log('pets: ' + pets);
+fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`, {
+    headers: {
+    Authorization: `Bearer ${accessToken}`
+    }
+})
+    .then(response => response.json())
+    .then(data => {
+    resolve(data.animals);
+    })
+    .catch(error => {
+    reject(error);
+    });
+});
+};
 
 callExternalApiUsingFetch();
 
