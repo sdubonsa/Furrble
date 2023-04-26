@@ -91,8 +91,9 @@ exports.logout = (req, res, next) => {
 exports.like = (req, res, next) => {
   userModel.findById(req.session.user)
   .then((user) => {
-    console.log(req.body)
-    user.likes.push(req.body.petid);
+    // convert JSON string to JSON object
+    var obj = JSON.parse(req.body.pet);
+    user.likes.push(obj);
     user.save()
     .then(() => {
       res.redirect("/users/swipe");

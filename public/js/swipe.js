@@ -81,10 +81,18 @@ const appendNewCard = async () => {
 
                 // get form
                 const form = document.querySelector('#like-form');
-                // get pet id
-                const petId = pets[cardCount].id;
-                // set pet id
-                form.querySelector('#petid').value = petId;
+                // get pet object
+                const petObject = pets[cardCount];
+
+                // create input element
+                const input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'pet');
+                input.setAttribute('value', JSON.stringify(petObject));
+
+                // append input to form
+                form.appendChild(input);
+
                 // submit form
                 form.submit();
             },
