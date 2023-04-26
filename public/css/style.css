@@ -89,3 +89,30 @@
     opacity: 1;
   }
 }
+
+/* styling the nav */
+header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+nav ul {
+  margin: 10px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+nav li {
+  margin-right: 20px;
+}
+nav li:last-child {
+  margin-right: 0;
+}
+nav a {
+  font-size: 1.2rem;
+}
