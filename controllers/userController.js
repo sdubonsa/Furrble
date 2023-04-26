@@ -71,9 +71,12 @@ exports.profile = (req, res, next) => {
 
 // send card page
 exports.swipe = (req, res, next) => {
-  userModel.find()
-  .then((users) => {
-    res.render("./user/swipe", { users: users });
+  // get all the likes of the user
+  userModel.findById(req.session.user)
+  .then((user) => {
+    // JSON object to JSON string
+    var json = JSON.stringify(user.likes);
+    res.render("./user/swipe", { user: json });
   })
   .catch((err) => next(err));
 };
@@ -91,8 +94,9 @@ exports.logout = (req, res, next) => {
 exports.like = (req, res, next) => {
   userModel.findById(req.session.user)
   .then((user) => {
-    console.log(req.body)
-    user.likes.push(req.body.petid);
+    // convert JSON string to JSON object
+    var obj = JSON.parse(req.body.pet);
+    user.likes.push(obj);
     user.save()
     .then(() => {
       res.redirect("/users/swipe");
