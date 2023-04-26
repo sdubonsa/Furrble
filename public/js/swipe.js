@@ -97,6 +97,7 @@ const appendNewCard = async () => {
             date: pets[cardCount].status_changed_at,
             gender: pets[cardCount].gender,
             size: pets[cardCount].size,
+            environment: pets[cardCount].environment,
         });
 
         swiper.append(card.element);
@@ -142,7 +143,7 @@ fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`
 callExternalApiUsingFetch();
 
 class Card {
-    constructor({ imageUrl, fullname, onDismiss, date, gender, size, onLike, onDislike, pet }) {
+    constructor({ imageUrl, fullname, onDismiss, date, gender, size, environment, onLike, onDislike, pet }) {
         this.imageUrl = imageUrl;
         this.fullname = fullname;
         this.pet = pet;
@@ -150,6 +151,7 @@ class Card {
         this.date = date.slice(0,10);
         this.gender = gender;
         this.size = size;
+        this.environment = environment;
         this.onLike = onLike = () => {
                 like.style.animationPlayState = "running";
                 like.classList.toggle("trigger");
@@ -209,6 +211,36 @@ class Card {
         size.innerHTML = "Size: " + this.size;
         size.classList.add("text-black");
 
+        const environmentChild = document.createElement("p");
+        if (this.environment.children === true) {
+            this.environment.children = "Works great with them!"
+        }
+        else {
+            this.environment.children = "Unfortunately, not great with them."
+        }
+        environmentChild.innerHTML = "Children: " + this.environment.children;
+        environmentChild.classList.add("text-black");
+
+        const environmentDog = document.createElement("p");
+        if (this.environment.dogs === true) {
+            this.environment.dogs = "Works great with them!"
+        }
+        else {
+            this.environment.dogs = "Unfortunately, not great with them."
+        }
+        environmentDog.innerHTML = "Other dogs: " + this.environment.dogs;
+        environmentDog.classList.add("text-black");
+
+        const environmentCat = document.createElement("p");
+        if (this.environment.cats === true) {
+            this.environment.cats = "Works great with them!"
+        }
+        else {
+            this.environment.cats = "Unfortunately, not great with them."
+        }
+        environmentCat.innerHTML = "Other cats: " + this.environment.cats;
+        environmentCat.classList.add("text-black");
+
         const img = document.createElement("img");
         img.src = this.imageUrl;
         card.append(img);
@@ -216,6 +248,9 @@ class Card {
         card.append((date));
         card.append(gender);
         card.append(size);
+        card.append(environmentChild);
+        card.append(environmentDog);
+        card.append(environmentCat);
         this.element = card;
         if (this.#isTouchDevice()) {
         this.#listenToTouchEvents();
