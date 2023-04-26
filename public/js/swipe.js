@@ -2,6 +2,12 @@ var apiKey = "IbaW8dTN1RMuvUDjDeWJ0ezUI3gDF3bGIt6COlj48Gi57bbvzt";
 var apiSecret = "0ZZhQn3IwuGN76cO8lng1TrbgF3JrUB6QSpiye7Z";
 const apiUrl = 'https://api.petfinder.com/v2/oauth2/token';
 
+// Get current script
+const script = document.currentScript;
+
+// Get user liks
+const likes = JSON.parse(script.getAttribute('currUser'));
+
 // Create the request body as a JSON object
 const requestBody = {
   grant_type: 'client_credentials',
@@ -58,6 +64,16 @@ accessTokenCall.then(function(result) {
 
 // Append a new card to the swiper
 const appendNewCard = async () => {
+    // If user already liked
+    likes.forEach((like) => {
+        if (pets[cardCount] != undefined && like[0].id == pets[cardCount].id) {
+            console.log('already liked: ' + pets[cardCount].name)
+            cardCount++;
+        }
+        // console.log("liked " + typeof like[0].id)
+        // console.log("api " + typeof pets[cardCount].id)
+    });
+
     if (pets[cardCount] === undefined) {
         // no more pets
         const card = new Card({
@@ -71,35 +87,12 @@ const appendNewCard = async () => {
         
         swiper.append(card.element);
     } else {
+        console.log(pets[cardCount])
         const card = new Card({
             imageUrl: pets[cardCount].photos[0].full,
             fullname: pets[cardCount].name,
-            onDismiss: appendNewCard,
-            onLike: () => {
-                like.style.animationPlayState = "running";
-                like.classList.toggle("trigger");
-
-                // get form
-                const form = document.querySelector('#like-form');
-                // get pet object
-                const petObject = pets[cardCount];
-
-                // create input element
-                const input = document.createElement('input');
-                input.setAttribute('type', 'hidden');
-                input.setAttribute('name', 'pet');
-                input.setAttribute('value', JSON.stringify(petObject));
-
-                // append input to form
-                form.appendChild(input);
-
-                // submit form
-                form.submit();
-            },
-            onDislike: () => {
-                dislike.style.animationPlayState = "running";
-                dislike.classList.toggle("trigger");
-            },
+            pet: pets[cardCount],
+            onDismiss: appendNewCard
         });
 
         swiper.append(card.element);
@@ -145,12 +138,37 @@ fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`
 callExternalApiUsingFetch();
 
 class Card {
-    constructor({ imageUrl, fullname, onDismiss, onLike, onDislike }) {
+    constructor({ imageUrl, fullname, onDismiss, onLike, onDislike, pet }) {
         this.imageUrl = imageUrl;
         this.fullname = fullname;
+        this.pet = pet;
         this.onDismiss = onDismiss;
-        this.onLike = onLike;
-        this.onDislike = onDislike;
+        this.onLike = onLike = () => {
+                like.style.animationPlayState = "running";
+                like.classList.toggle("trigger");
+
+                // get form
+                const form = document.querySelector('#like-form');
+
+                // get the current pet
+                const petObject = this.pet;
+
+                // create input element
+                const input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'pet');
+                input.setAttribute('value', JSON.stringify(petObject));
+
+                // append input to form
+                form.appendChild(input);
+
+                // submit form
+                form.submit();
+            };
+        this.onDislike = onDislike = () => {
+                dislike.style.animationPlayState = "running";
+                dislike.classList.toggle("trigger");
+        };
         this.#init();
     }
     // private properties
@@ -167,13 +185,20 @@ class Card {
     #init = () => {
         const card = document.createElement("div");
         card.classList.add("card");
+
         const fullname = document.createElement("p");
         fullname.innerHTML = this.fullname;
         fullname.classList.add("text-black");
+
+        const pet = document.createElement("p");
+        pet.innerHTML = this.pet;
+        pet.classList.add("text-black");
+
         const img = document.createElement("img");
         img.src = this.imageUrl;
         card.append(img);
         card.append(fullname);
+        card.append((pet))
         this.element = card;
         if (this.#isTouchDevice()) {
         this.#listenToTouchEvents();
