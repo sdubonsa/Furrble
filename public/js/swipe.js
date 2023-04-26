@@ -94,7 +94,8 @@ const appendNewCard = async () => {
             fullname: pets[cardCount].name,
             pet: pets[cardCount],
             onDismiss: appendNewCard,
-            date: pets[cardCount].status_changed_at
+            date: pets[cardCount].status_changed_at,
+            gender: pets[cardCount].gender,
         });
 
         swiper.append(card.element);
@@ -140,12 +141,13 @@ fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`
 callExternalApiUsingFetch();
 
 class Card {
-    constructor({ imageUrl, fullname, onDismiss, date, onLike, onDislike, pet }) {
+    constructor({ imageUrl, fullname, onDismiss, date, gender, onLike, onDislike, pet }) {
         this.imageUrl = imageUrl;
         this.fullname = fullname;
         this.pet = pet;
         this.onDismiss = onDismiss;
         this.date = date.slice(0,10);
+        this.gender = gender;
         this.onLike = onLike = () => {
                 like.style.animationPlayState = "running";
                 like.classList.toggle("trigger");
@@ -197,11 +199,16 @@ class Card {
         date.innerHTML = "Date Posted: " + this.date
         date.classList.add("text-black");
 
+        const gender = document.createElement("p");
+        gender.innerHTML = "Gender: " + this.gender
+        gender.classList.add("text-black");
+
         const img = document.createElement("img");
         img.src = this.imageUrl;
         card.append(img);
         card.append(fullname);
         card.append((date))
+        card.append(gender)
         this.element = card;
         if (this.#isTouchDevice()) {
         this.#listenToTouchEvents();
