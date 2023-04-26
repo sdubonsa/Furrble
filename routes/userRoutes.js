@@ -1,6 +1,7 @@
 const express = require("express");
 const controller = require("../controllers/userController");
 const router = express.Router();
+const { isLoggedIn } = require("../middlewares/auth");
 
 // GET /users/register: Send register form
 router.get("/register", controller.register);
@@ -16,11 +17,11 @@ router.post('/login', controller.authenticate);
 router.get('/profile', controller.profile);
 
 // GET /users/logout: Logout user
-router.get('/logout', controller.logout);
+router.get('/logout', isLoggedIn, controller.logout);
 
 // GET /users/swipe: Show other users
-router.get('/swipe', controller.swipe);
+router.get('/swipe', isLoggedIn, controller.swipe);
 
-router.put('/swipe', controller.like);
+router.put('/swipe', isLoggedIn, controller.like);
 
 module.exports = router;
