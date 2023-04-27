@@ -84,7 +84,7 @@ exports.swipe = (req, res, next) => {
   userModel.findById(req.session.user)
   .then((user) => {
     // JSON object to JSON string
-    let json = JSON.stringify(user.likes)
+    let json = JSON.stringify(user.likes);
     res.render("./user/swipe", { user: json });
   })
   .catch((err) => next(err));
