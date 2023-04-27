@@ -69,14 +69,22 @@ exports.profile = (req, res, next) => {
       .catch((err) => next(err));
 };
 
+exports.likes = (req, res, next) => {
+  userModel.findById(req.session.user)
+  .then((user) => {
+    // JSON object to JSON string
+    res.render("./user/likes", { user: user.likes });
+  })
+  .catch((err) => next(err));
+};
+
 // send card page
 exports.swipe = (req, res, next) => {
   // get all the likes of the user
   userModel.findById(req.session.user)
   .then((user) => {
     // JSON object to JSON string
-    var json = JSON.stringify(user.likes);
-    res.render("./user/swipe", { user: json });
+    res.render("./user/swipe", { user: user.likes });
   })
   .catch((err) => next(err));
 };
