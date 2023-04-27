@@ -51,15 +51,7 @@ accessTokenCall.then(function(result) {
     accessToken = result;
 
     // When the API call is complete, set the pets variable
-    let petsCall = callExternalApiUsingFetch();
-    petsCall
-    .then(function(result) {
-        pets = result;
-    })
-    .then(function(result) {
-        // When the pets variable is set, append the first card
-        appendNewCard();
-    })
+    
 });
 
 
@@ -117,21 +109,46 @@ const appendNewCard = async () => {
     });
 }
 
+let filterForm = document.getElementById("filter-form");
+
+filterForm.addEventListener('submit', function(event){
+    event.preventDefault();
+
+    let Stype = filterForm.querySelector("#type").value;
+    let Sspecies = filterForm.querySelector("#species").value;
+    let Ssize = filterForm.querySelector("#size").value;
+    let Sage = filterForm.querySelector("#age").value;
+    let Sgender = filterForm.querySelector("#gender").value;
+    let Sdistance = filterForm.querySelector("#distance").value;
+
+    const queryParams = {
+        type: Stype,
+        size: Ssize,
+        age: Sage,
+        gender: Sgender,
+        breed: Sspecies,
+        location: 'Charlotte, NC',
+        distance: Sdistance,
+        unit: 'Miles',
+        status: 'adoptable'
+    };
+    let petsCall = callExternalApiUsingFetch();
+    petsCall
+    .then(function(result) {
+        pets = result;
+    })
+    .then(function(result) {
+        // When the pets variable is set, append the first card
+        //appendNewCard();
+    })
+    appendNewCard();
+});
+
+
 // Wrap the API request in a promise
-const callExternalApiUsingFetch = () => {
+const callExternalApiUsingFetch = (queryParam) => {
 return new Promise((resolve, reject) => {
-const queryParams = {
-    type: 'Dog',
-    // breed: 'Pit Bull Terrier',
-    size: 'Medium',
-    age: 'young',
-    gender: 'male',
-    location: 'Charlotte, NC',
-    distance: 10,
-    unit: 'Miles',
-    status: 'adoptable',
-    attributes: 'neutered'
-};
+const queryParams = queryParam;
 
 fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`, {
     headers: {
@@ -148,7 +165,6 @@ fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`
 });
 };
 
-callExternalApiUsingFetch();
 
 class Card {
     constructor({ imageUrl, fullname, onDismiss, date, gender, size, environment, onLike, onDislike, pet }) {
@@ -180,6 +196,8 @@ class Card {
                 form.appendChild(input);
 
                 // submit form
+                form.preventDefault();
+                form.submit();
                 form.submit((e) => {
                     e.preventDefault();
                 });
