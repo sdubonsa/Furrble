@@ -86,6 +86,14 @@ const appendNewCard = async () => {
         });
         
         swiper.append(card.element);
+    } else if (pets[cardCount].photos[0] === undefined) {
+        // no photo
+        const card = new Card({
+            imageUrl: "https://via.placeholder.com/300x300",
+            fullname: pets[cardCount].name,
+            pet: pets[cardCount],
+            onDismiss: appendNewCard
+        });
     } else {
         console.log(pets[cardCount])
         const card = new Card({
@@ -163,7 +171,9 @@ class Card {
                 form.appendChild(input);
 
                 // submit form
-                form.submit();
+                form.submit((e) => {
+                    e.preventDefault();
+                });
             };
         this.onDislike = onDislike = () => {
                 dislike.style.animationPlayState = "running";
