@@ -2,6 +2,7 @@ var apiKey = "IbaW8dTN1RMuvUDjDeWJ0ezUI3gDF3bGIt6COlj48Gi57bbvzt";
 var apiSecret = "0ZZhQn3IwuGN76cO8lng1TrbgF3JrUB6QSpiye7Z";
 const apiUrl = 'https://api.petfinder.com/v2/oauth2/token';
 
+
 // Get current script
 const script = document.currentScript;
 
@@ -78,13 +79,25 @@ const appendNewCard = async () => {
         });
         
         swiper.append(card.element);
+    } else if (pets[cardCount].photos[0] === undefined) {
+        // no photo
+        const card = new Card({
+            imageUrl: "https://via.placeholder.com/300x300",
+            fullname: pets[cardCount].name,
+            pet: pets[cardCount],
+            onDismiss: appendNewCard
+        });
     } else {
         console.log(pets[cardCount])
         const card = new Card({
             imageUrl: pets[cardCount].photos[0].full,
             fullname: pets[cardCount].name,
             pet: pets[cardCount],
-            onDismiss: appendNewCard
+            onDismiss: appendNewCard,
+            date: pets[cardCount].status_changed_at,
+            gender: pets[cardCount].gender,
+            size: pets[cardCount].size,
+            environment: pets[cardCount].environment,
         });
 
         swiper.append(card.element);
@@ -154,11 +167,15 @@ fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`
 
 
 class Card {
-    constructor({ imageUrl, fullname, onDismiss, onLike, onDislike, pet }) {
+    constructor({ imageUrl, fullname, onDismiss, date, gender, size, environment, onLike, onDislike, pet }) {
         this.imageUrl = imageUrl;
         this.fullname = fullname;
         this.pet = pet;
         this.onDismiss = onDismiss;
+        this.date = date.slice(0,10);
+        this.gender = gender;
+        this.size = size;
+        this.environment = environment;
         this.onLike = onLike = () => {
                 like.style.animationPlayState = "running";
                 like.classList.toggle("trigger");
@@ -181,6 +198,9 @@ class Card {
                 // submit form
                 form.preventDefault();
                 form.submit();
+                form.submit((e) => {
+                    e.preventDefault();
+                });
             };
         this.onDislike = onDislike = () => {
                 dislike.style.animationPlayState = "running";
@@ -204,18 +224,61 @@ class Card {
         card.classList.add("card");
 
         const fullname = document.createElement("p");
-        fullname.innerHTML = this.fullname;
+        fullname.innerHTML = "Name: " + this.fullname;
         fullname.classList.add("text-black");
 
-        const pet = document.createElement("p");
-        pet.innerHTML = this.pet;
-        pet.classList.add("text-black");
+        const date = document.createElement("p");
+        date.innerHTML = "Date Posted: " + this.date;
+        date.classList.add("text-black");
+
+        const gender = document.createElement("p");
+        gender.innerHTML = "Gender: " + this.gender;
+        gender.classList.add("text-black");
+
+        const size = document.createElement("p");
+        size.innerHTML = "Size: " + this.size;
+        size.classList.add("text-black");
+
+        const environmentChild = document.createElement("p");
+        if (this.environment.children === true) {
+            this.environment.children = "Works great with them!"
+        }
+        else {
+            this.environment.children = "Unfortunately, not great with them."
+        }
+        environmentChild.innerHTML = "Children: " + this.environment.children;
+        environmentChild.classList.add("text-black");
+
+        const environmentDog = document.createElement("p");
+        if (this.environment.dogs === true) {
+            this.environment.dogs = "Works great with them!"
+        }
+        else {
+            this.environment.dogs = "Unfortunately, not great with them."
+        }
+        environmentDog.innerHTML = "Other dogs: " + this.environment.dogs;
+        environmentDog.classList.add("text-black");
+
+        const environmentCat = document.createElement("p");
+        if (this.environment.cats === true) {
+            this.environment.cats = "Works great with them!"
+        }
+        else {
+            this.environment.cats = "Unfortunately, not great with them."
+        }
+        environmentCat.innerHTML = "Other cats: " + this.environment.cats;
+        environmentCat.classList.add("text-black");
 
         const img = document.createElement("img");
         img.src = this.imageUrl;
         card.append(img);
         card.append(fullname);
-        card.append((pet))
+        card.append((date));
+        card.append(gender);
+        card.append(size);
+        card.append(environmentChild);
+        card.append(environmentDog);
+        card.append(environmentCat);
         this.element = card;
         if (this.#isTouchDevice()) {
         this.#listenToTouchEvents();

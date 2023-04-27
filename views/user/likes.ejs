@@ -1,0 +1,54 @@
+<%- include ('../partials/header.ejs') %>
+<%- include('../partials/nav.ejs') %>
+<script>console.log(user);</script>
+<div class="h-full bg-gray-700">
+<div class="grid grid-cols-4 gap-4 m-8">
+    <% for(let i=0; i<user.length; i++) { %>
+    <div class="min-w-m rounded overflow-hidden shadow-lg bg-blue-50">
+        <img class="w-full " src=<%= user[i][0].photos[0].medium %> alt="Pet pic">
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2"><%= user[i][0].name %></div>
+          <p class="text-gray-700 text-base">
+            <strong>Contact Information:</strong>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>Email:</strong> <%= user[i][0].contact.email %>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>Phone:</strong> <%= user[i][0].contact.phone %>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>Address:</strong> <%= user[i][0].contact.address.address1 %>, <%= user[i][0].contact.address.city %>, <%= user[i][0].contact.address.state %> <%= user[i][0].contact.address.postcode %>, <%= user[i][0].contact.address.country %>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>House trained:</strong> <%= user[i][0].attributes.house_trained !== null ? (user[i][0].attributes.house_trained ? 'Yes' : 'No') : 'N/A' %>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>Good with kids:</strong> <%= user[i][0].environment.children !== null ? (user[i][0].environment.children ? 'Yes' : 'No') : 'N/A' %>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>Good with dogs:</strong> <%= user[i][0].environment.dogs !== null ? (user[i][0].environment.dogs ? 'Yes' : 'No') : 'N/A' %>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>Good with cats:</strong> <%= user[i][0].environment.cats !== null ? (user[i][0].environment.cats ? 'Yes' : 'No') : 'N/A' %>
+          </p>
+          <p class="text-gray-700 text-base">
+            <strong>Attributes:</strong> <% for(let j=0; j<user[i][0].tags.length; j++) { %>
+              <%= user[i][0].tags[j] %><% if(j !== user[i][0].tags.length - 1) { %>, <% } %>
+            <% } %>
+          </p>
+          
+        </div>
+        <div class="px-6 pt-4 pb-2">
+        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= user[i][0].size %></span>
+          <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= user[i][0].gender %></span>
+          <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= user[i][0].age %></span>
+          <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= user[i][0].breeds.primary %></span>
+        </div>
+      </div>
+<% } %>
+</div>
+</div> 
+<script content="application/javascript" type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<%- include ('../partials/footer.ejs') %>
