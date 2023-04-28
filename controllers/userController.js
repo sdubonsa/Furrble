@@ -1,4 +1,19 @@
 const userModel = require("../models/user");
+const preferenceModel = require("../models/preferences");
+const preferences = require("../models/preferences");
+
+// DEFAULT PREFERENCES
+const pref = {
+  type: "Dog",
+  size: "Medium",
+  age: "Young",
+  gender: "Male",
+  breed: "Labrador Retriever",
+  location: 'Charlotte, NC',
+  distance: 10
+}
+
+
 
 // Send register form
 exports.register = (req, res) => {
@@ -61,12 +76,28 @@ exports.authenticate = (req, res, next) => {
 
 // send profile page
 exports.profile = (req, res, next) => {
-    userModel
-      .findById(req.session.user)
-      .then((user) => {
-        res.render("./user/profile", { user: user });
-      })
-      .catch((err) => next(err));
+  userModel.findById(req.session.user)
+    .then((user) => {
+      // find the preferences of the user
+      preferenceModel
+        .findOne({ user: req.session.user })
+        .then((preferences) => {
+          // if the user has no preferences, set the default preferences
+          if (!preferences) {
+            let preference = new preferenceModel(pref);
+            preference.user = req.session.user;
+            preference
+              .save()
+              .then((preference) => {
+                req.flash("success", "Preference added successfully");
+                res.render("./user/profile", { user: user, preferences : preference });
+              })
+          } else { 
+            res.render("./user/profile", { user: user, preferences: preferences });
+          }
+        })
+    })
+    .catch((err) => next(err));
 };
 
 exports.likes = (req, res, next) => {
@@ -82,11 +113,19 @@ exports.likes = (req, res, next) => {
 exports.swipe = (req, res, next) => {
   // get all the likes of the user
   userModel.findById(req.session.user)
-  .then((user) => {
-    // JSON object to JSON string
-    let json = JSON.stringify(user.likes);
-    res.render("./user/swipe", { user: json });
-  })
+    .then((user) => {
+      // JSON object to JSON string
+      let json = JSON.stringify(user.likes);
+
+      // get the user preferences
+      preferenceModel
+        .find({ user: req.session.user })
+        .then((preferences) => {
+          let json2 = JSON.stringify(preferences);
+          res.render("./user/swipe", { user: json, preferences: json2 });
+        })
+        .catch((err) => next(err));
+    })
   .catch((err) => next(err));
 };
 

@@ -1,6 +1,89 @@
 <%- include ('../partials/header.ejs') %>
 <%- include('../partials/nav.ejs') %> 
 <div class="flex items-center h-screen w-full justify-center bg-gray-700">
+    <% if (!preferences) { %> 
+    <form action="/pref/" method="POST">
+        <label for="type">Type:</label>
+        <select id="type" name="type">
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+        </select>
+
+        <label for="size">Size:</label>
+        <select id="size" name="size">
+            <option value="">Any</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+            <option value="Extra Large">Extra Large</option>
+        </select>
+
+        <label for="age">Age:</label>
+        <select id="age" name="age">
+            <option value="">Any</option>
+            <option value="Baby">Baby</option>
+            <option value="Young">Young</option>
+            <option value="Adult">Adult</option>
+            <option value="Senior">Senior</option>
+        </select>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="">Any</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" placeholder="Charlotte, NC">
+
+        <label for="distance">Distance (Miles):</label>
+        <input type="number" id="distance" name="distance" placeholder="10">
+        <br><br>
+        <button type="submit">Filter</button>
+        <% } else { %>
+            <form action="/pref/?_method=PUT" method="POST">
+                <label for="type">Type:</label>
+                <select id="type" name="type">
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                </select>
+            
+                <label for="size">Size:</label>
+                <select id="size" name="size">
+                    <option value="">Any</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    <option value="Extra Large">Extra Large</option>
+                </select>
+            
+                <label for="age">Age:</label>
+                <select id="age" name="age">
+                    <option value="">Any</option>
+                    <option value="Baby">Baby</option>
+                    <option value="Young">Young</option>
+                    <option value="Adult">Adult</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="">Any</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" placeholder="Charlotte, NC">
+            
+                <label for="distance">Distance (Miles):</label>
+                <input type="number" id="distance" name="distance" placeholder="10">
+                <br><br>
+                <button type="submit">Filter</button>
+        <% } %>
+
+    </form>
 <div class="min-w-m max-w-m w-56">
     <div class="bg-gray-800 shadow-xl rounded-lg py-3">
         <div class="photo-wrapper p-2">
@@ -24,43 +107,6 @@
                 </tr>
             </tbody></table>
             <div id="filter-form">
-        <form action="/users/swipe" method="POST">
-          <label for="type">Type:</label>
-          <select id="type" name="type">
-            <option value="Dog">Dog</option>
-            <option value="Cat">Cat</option>
-          </select>
-          <label for="breed">Breed:</label>
-          <input type="text" id="species" name="species">
-          <label for="size">Size:</label>
-          <select id="size" name="size">
-            <option value="">Any</option>
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
-            <option value="Extra Large">Extra Large</option>
-          </select>
-          <label for="age">Age:</label>
-          <select id="age" name="age">
-            <option value="">Any</option>
-            <option value="Baby">Baby</option>
-            <option value="Young">Young</option>
-            <option value="Adult">Adult</option>
-            <option value="Senior">Senior</option>
-          </select>
-          <label for="gender">Gender:</label>
-          <select id="gender" name="gender">
-            <option value="">Any</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          <label for="location">Location:</label>
-          <input type="text" id="distance" name="distance" placeholder="Charlotte, NC">
-          <label for="distance">Distance (Miles):</label>
-          <input type="text" id="distance" name="distance" placeholder="10">
-          <br><br>
-          <button type="submit">Filter</button>
-        </form>
       </div>
     </div>
             <% if (success.length > 0) { %> 
