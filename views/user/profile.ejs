@@ -1,56 +1,16 @@
 <%- include ('../partials/header.ejs') %>
 <%- include('../partials/nav.ejs') %> 
 <div class="flex items-center h-screen w-full justify-center bg-gray-700">
-    <% if (!preferences) { %> 
-    <form action="/pref/" method="POST">
-        <label for="type">Type:</label>
-        <select id="type" name="type">
-            <option value="Dog">Dog</option>
-            <option value="Cat">Cat</option>
-        </select>
-
-        <label for="size">Size:</label>
-        <select id="size" name="size">
-            <option value="">Any</option>
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
-            <option value="Extra Large">Extra Large</option>
-        </select>
-
-        <label for="age">Age:</label>
-        <select id="age" name="age">
-            <option value="">Any</option>
-            <option value="Baby">Baby</option>
-            <option value="Young">Young</option>
-            <option value="Adult">Adult</option>
-            <option value="Senior">Senior</option>
-        </select>
-
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender">
-            <option value="">Any</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" placeholder="Charlotte, NC">
-
-        <label for="distance">Distance (Miles):</label>
-        <input type="number" id="distance" name="distance" placeholder="10">
-        <br><br>
-        <button type="submit">Filter</button>
-        <% } else { %>
+    <div class="w-1/2 bg-gray-800 rounded shadow-lg p-8 md:max-w-sm md:mx-auto text-white">
             <form action="/pref/?_method=PUT" method="POST">
                 <label for="type">Type:</label>
-                <select id="type" name="type">
+                <select id="type" name="type" class="text-black">
                     <option value="Dog">Dog</option>
                     <option value="Cat">Cat</option>
                 </select>
             
                 <label for="size">Size:</label>
-                <select id="size" name="size">
+                <select id="size" name="size" class="text-black">
                     <option value="">Any</option>
                     <option value="Small">Small</option>
                     <option value="Medium">Medium</option>
@@ -59,7 +19,7 @@
                 </select>
             
                 <label for="age">Age:</label>
-                <select id="age" name="age">
+                <select id="age" name="age" class="text-black">
                     <option value="">Any</option>
                     <option value="Baby">Baby</option>
                     <option value="Young">Young</option>
@@ -68,63 +28,74 @@
                 </select>
             
                 <label for="gender">Gender:</label>
-                <select id="gender" name="gender">
+                <select id="gender" name="gender" class="text-black">
                     <option value="">Any</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
             
                 <label for="location">Location:</label>
-                <input type="text" id="location" name="location" placeholder="Charlotte, NC">
+                <input type="text" id="location" name="location" placeholder="Charlotte, NC" class="text-black"> 
             
                 <label for="distance">Distance (Miles):</label>
-                <input type="number" id="distance" name="distance" placeholder="10">
+                <input type="number" id="distance" name="distance" placeholder="10" class="mt-1 text-black">
                 <br><br>
-                <button type="submit">Filter</button>
-        <% } %>
-
+                <button type="submit" class="bg-green-400 w-2/3 rounded text-black">Filter</button>
     </form>
-<div class="min-w-m max-w-m w-56">
-    <div class="bg-gray-800 shadow-xl rounded-lg py-3">
-        <div class="photo-wrapper p-2">
-            <img class="w-32 h-32 rounded-full mx-auto" src="https://previews.123rf.com/images/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey.jpg" alt="John Doe">
-        </div>
-        <div class="p-2">
-            
-            <h3 class="text-center text-xl text-white font-medium leading-8"><%= user.fullname %></h3>
-            <div class="text-center text-white text-xs font-semibold">
-                <p>Adopter</p>
+    <div class="min-w-m max-w-m w-56 flex flex-center">
+        <div class="bg-gray-800 shadow-xl rounded-lg py-3">
+            <div class="photo-wrapper p-2">
+                <img class="w-32 h-32 rounded-full mx-auto"
+                    src="https://previews.123rf.com/images/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey.jpg"
+                    alt="John Doe">
             </div>
-            <table class="text-xs my-3">
-                <tbody>
-                <tr>
-                    <td class="px-2 py-2 text-white font-semibold">Username</td>
-                    <td class="px-2 py-2 text-white"><%= user.username %></td>
-                </tr>
-                <tr>
-                    <td class="px-2 py-2 text-white font-semibold">Email</td>
-                    <td class="px-2 py-2 text-white"><%= user.email %></td>
-                </tr>
-            </tbody></table>
-            <div id="filter-form">
-      </div>
-    </div>
-            <% if (success.length > 0) { %> 
-                <% for (let i = 0; i < success.length; i++) { %> 
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <div class="p-2">
+    
+                <h3 class="text-center text-xl text-white font-medium leading-8">
+                    <%= user.fullname %>
+                </h3>
+                <div class="text-center text-white text-xs font-semibold">
+                    <p>Adopter</p>
+                </div>
+                <table class="text-xs my-3">
+                    <tbody>
+                        <tr>
+                            <td class="px-2 py-2 text-white font-semibold">Username</td>
+                            <td class="px-2 py-2 text-white">
+                                <%= user.username %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-2 text-white font-semibold">Email</td>
+                            <td class="px-2 py-2 text-white">
+                                <%= user.email %>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="filter-form">
+                </div>
+            </div>
+            <% if (success.length> 0) { %>
+                <% for (let i=0; i < success.length; i++) { %>
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                        role="alert">
                         <strong class="font-bold">Yay!</strong>
-                        <span class="block sm:inline"><%= success[i] %>.</span>
+                        <span class="block sm:inline">
+                            <%= success[i] %>.
+                        </span>
                     </div>
-                <% } %>
-            <% } %>
-
-            <div class="text-center my-3">
-                <a class="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium" href="/users/swipe">Start Swiping!<br></a>
-                <!-- <a class="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium" href="/users/logout">Log Out</a> -->
-            </div>
-
+                    <% } %>
+                        <% } %>
+    
+                            <div class="text-center my-3">
+                                <a class="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium"
+                                    href="/users/swipe">Start Swiping!<br></a>
+                                <!-- <a class="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium" href="/users/logout">Log Out</a> -->
+                            </div>
+    
         </div>
     </div>
-</div>
+    </div>
 </div>
 <%- include ('../partials/footer.ejs') %>

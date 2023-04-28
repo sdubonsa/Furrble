@@ -149,10 +149,22 @@ class Card {
         this.fullname = fullname;
         this.pet = pet;
         this.onDismiss = onDismiss;
-        this.date = date.slice(0,10);
+        if (date === undefined) {
+            this.date = "N/A";
+        } else {
+            this.date = date.slice(0,10);
+        }
         this.gender = gender;
         this.size = size;
-        this.environment = environment;
+        if (environment === undefined) {
+            this.environment = {
+                children: "N/A",
+                dogs: "N/A",
+                cats: "N/A"
+            };
+        } else {
+            this.environment = environment;
+        }
         this.onLike = onLike = () => {
                 like.style.animationPlayState = "running";
                 like.classList.toggle("trigger");
@@ -197,6 +209,7 @@ class Card {
     #init = () => {
         const card = document.createElement("div");
         card.classList.add("card");
+        card.classList.add("text-white")
 
         const fullname = document.createElement("p");
         fullname.innerHTML = "Name: " + this.fullname;
