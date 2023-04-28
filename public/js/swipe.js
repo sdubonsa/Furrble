@@ -108,16 +108,15 @@ const appendNewCard = async () => {
 const callExternalApiUsingFetch = () => {
 return new Promise((resolve, reject) => {
 const queryParams = {
-    type: 'Dog',
+    type: 'Cat',
     // breed: 'Pit Bull Terrier',
-    size: 'Medium',
-    age: 'young',
-    gender: 'male',
-    location: 'Charlotte, NC',
+    // size: 'Medium',
+    // age: 'young',
+    // gender: 'male',
+     location: 'Charlotte, NC',
     distance: 10,
     unit: 'Miles',
-    status: 'adoptable',
-    attributes: 'neutered'
+    // status: 'adoptable',
 };
 
 fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`, {
