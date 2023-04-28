@@ -7,6 +7,7 @@
             <img class="w-32 h-32 rounded-full mx-auto" src="https://previews.123rf.com/images/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey.jpg" alt="John Doe">
         </div>
         <div class="p-2">
+            
             <h3 class="text-center text-xl text-white font-medium leading-8"><%= user.fullname %></h3>
             <div class="text-center text-white text-xs font-semibold">
                 <p>Adopter</p>
@@ -22,7 +23,46 @@
                     <td class="px-2 py-2 text-white"><%= user.email %></td>
                 </tr>
             </tbody></table>
-
+            <div id="filter-form">
+        <form action="/users/swipe" method="POST">
+          <label for="type">Type:</label>
+          <select id="type" name="type">
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+          </select>
+          <label for="breed">Breed:</label>
+          <input type="text" id="species" name="species">
+          <label for="size">Size:</label>
+          <select id="size" name="size">
+            <option value="">Any</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+            <option value="Extra Large">Extra Large</option>
+          </select>
+          <label for="age">Age:</label>
+          <select id="age" name="age">
+            <option value="">Any</option>
+            <option value="Baby">Baby</option>
+            <option value="Young">Young</option>
+            <option value="Adult">Adult</option>
+            <option value="Senior">Senior</option>
+          </select>
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender">
+            <option value="">Any</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <label for="location">Location:</label>
+          <input type="text" id="distance" name="distance" placeholder="Charlotte, NC">
+          <label for="distance">Distance (Miles):</label>
+          <input type="text" id="distance" name="distance" placeholder="10">
+          <br><br>
+          <button type="submit">Filter</button>
+        </form>
+      </div>
+    </div>
             <% if (success.length > 0) { %> 
                 <% for (let i = 0; i < success.length; i++) { %> 
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
