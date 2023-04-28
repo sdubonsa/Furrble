@@ -8,6 +8,7 @@ const methodOVerride = require("method-override");
 
 // ROUTE MODULE
 var userRoutes = require("./routes/userRoutes");
+var prefRoutes = require("./routes/preferenceRoutes");
 
 // APP
 const app = express();
@@ -70,3 +71,5 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+
+app.use('/pref', prefRoutes);

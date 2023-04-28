@@ -1,47 +1,6 @@
 <%- include ('../partials/header.ejs') %>
 <%- include('../partials/nav.ejs') %>
 <div class="flex h-screen bg-gray-700">
-    <div class="w-1/4 bg-gray-800 shadow-xl rounded-lg py-3 filter-box">
-      <div id="filter-form">
-        <form action="/users/swipe" method="">
-          <label for="type">Type:</label>
-          <select id="type" name="type">
-            <option value="Dog">Dog</option>
-            <option value="Cat">Cat</option>
-          </select>
-          <label for="breed">Breed:</label>
-          <input type="text" id="species" name="species">
-          <label for="size">Size:</label>
-          <select id="size" name="size">
-            <option value="">Any</option>
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
-            <option value="Extra Large">Extra Large</option>
-          </select>
-          <label for="age">Age:</label>
-          <select id="age" name="age">
-            <option value="">Any</option>
-            <option value="Baby">Baby</option>
-            <option value="Young">Young</option>
-            <option value="Adult">Adult</option>
-            <option value="Senior">Senior</option>
-          </select>
-          <label for="gender">Gender:</label>
-          <select id="gender" name="gender">
-            <option value="">Any</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          <label for="location">Location:</label>
-          <input type="text" id="distance" name="distance" placeholder="Charlotte, NC">
-          <label for="distance">Distance (Miles):</label>
-          <input type="text" id="distance" name="distance" placeholder="10">
-          <br><br>
-          <button type="submit">Filter</button>
-        </form>
-      </div>
-    </div>
     <div class="flex-1">
       <div class="flex items-center justify-center h-screen">
         <form method="POST" action="/users/swipe?_method=PUT" id="like-form">
@@ -64,7 +23,7 @@ const reportBtn = document.querySelector('#report-btn');
         alert('Report successful');
     });
 </script>
-<script type="application/javascript" src="/js/swipe.js" currUser="<%= user %>" defer></script>
+<script type="application/javascript" src="/js/swipe.js" currUser="<%= user %>" preferences="<%= preferences %>" defer></script>
 <script content="application/javascript" type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <%- include ('../partials/footer.ejs') %>

@@ -8,6 +8,22 @@ const script = document.currentScript;
 
 // Get user liks
 const likes = JSON.parse(script.getAttribute('currUser'));
+const preference = JSON.parse(script.getAttribute('preferences'));
+let pets = null;
+
+// use the preferences to make the API call
+const queryParams = {
+    type: preference[0].type,
+    size: preference[0].size,
+    age: preference[0].age,
+    gender: preference[0].gender,
+    // breed: preference[0].breed,
+    location: preference[0].location,
+    distance: preference[0].distance,
+    unit: 'Miles',
+    status: 'adoptable'
+};
+
 
 // Create the request body as a JSON object
 const requestBody = {
@@ -41,19 +57,6 @@ const getAccessToken = () => {
 
 // Initialize variables
 let accessToken = null;
-let pets = null;
-
-console.log('API call start.')
-let accessTokenCall = getAccessToken();
-
-// When the access token is fetched, make the API call
-accessTokenCall.then(function(result) {
-    accessToken = result;
-
-    // When the API call is complete, set the pets variable
-    
-});
-
 
 // Append a new card to the swiper
 const appendNewCard = async () => {
@@ -109,42 +112,6 @@ const appendNewCard = async () => {
     });
 }
 
-let filterForm = document.getElementById("filter-form");
-
-filterForm.addEventListener('submit', function(event){
-    event.preventDefault();
-
-    let Stype = filterForm.querySelector("#type").value;
-    let Sspecies = filterForm.querySelector("#species").value;
-    let Ssize = filterForm.querySelector("#size").value;
-    let Sage = filterForm.querySelector("#age").value;
-    let Sgender = filterForm.querySelector("#gender").value;
-    let Sdistance = filterForm.querySelector("#distance").value;
-
-    const queryParams = {
-        type: Stype,
-        size: Ssize,
-        age: Sage,
-        gender: Sgender,
-        breed: Sspecies,
-        location: 'Charlotte, NC',
-        distance: Sdistance,
-        unit: 'Miles',
-        status: 'adoptable'
-    };
-    let petsCall = callExternalApiUsingFetch();
-    petsCall
-    .then(function(result) {
-        pets = result;
-    })
-    .then(function(result) {
-        // When the pets variable is set, append the first card
-        //appendNewCard();
-    })
-    appendNewCard();
-});
-
-
 // Wrap the API request in a promise
 const callExternalApiUsingFetch = (queryParam) => {
 return new Promise((resolve, reject) => {
@@ -164,7 +131,6 @@ fetch(`https://api.petfinder.com/v2/animals?${new URLSearchParams(queryParams)}`
     });
 });
 };
-
 
 class Card {
     constructor({ imageUrl, fullname, onDismiss, date, gender, size, environment, onLike, onDislike, pet }) {
@@ -196,8 +162,6 @@ class Card {
                 form.appendChild(input);
 
                 // submit form
-                form.preventDefault();
-                form.submit();
                 form.submit((e) => {
                     e.preventDefault();
                 });
@@ -380,3 +344,21 @@ const dislike = document.querySelector("#dislike");
 
 // variables
 let cardCount = 0;
+
+console.log('API call start.')
+let accessTokenCall = getAccessToken();
+// When the access token is fetched, make the API call
+accessTokenCall.then(function(result) {
+    accessToken = result;
+    // When the API call is complete, set the pets variable
+    let petsCall = callExternalApiUsingFetch(queryParams);
+    petsCall
+        .then(function (result) {
+            pets = result;
+        })
+        .then(function (result) {
+            // When the pets variable is set, append the first card
+            appendNewCard();
+        }
+    );
+});
