@@ -1,8 +1,11 @@
 <%- include ('../partials/header.ejs') %>
 <%- include('../partials/nav.ejs') %>
 <script>console.log(user);</script>
-<div class="h-full bg-gray-700">
+<div class="h-screen bg-gray-700">
 <div class="grid grid-cols-4 gap-4 m-8">
+  <% if(user.length === 0) { %>
+    <h1 class="text-4xl text-white">You have no likes yet!</h1>
+  <% } else { %>
     <% for(let i=0; i<user.length; i++) { %>
     <div class="min-w-m rounded overflow-hidden shadow-lg bg-blue-50">
         <img class="w-full " src=<%= user[i][0].photos[0].medium %> alt="Pet pic">
@@ -46,9 +49,11 @@
           <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= user[i][0].breeds.primary %></span>
         </div>
       </div>
-<% } %>
+<% } } %>
 </div>
 </div> 
 <script content="application/javascript" type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-<%- include ('../partials/footer.ejs') %>
+</body>
+
+</html>
